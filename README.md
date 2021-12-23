@@ -1,1 +1,1 @@
-# valeriagolovan.github.io
+# Анастасиади Алексей, Кирилл Рудеев
