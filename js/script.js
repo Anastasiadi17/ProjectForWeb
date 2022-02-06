@@ -1,27 +1,41 @@
-function moveNavbar(){
-  let windowInnerWidth = window.innerWidth;
-  let navbar = $("#navbar");
-  if(windowInnerWidth <= 993) {
-      navbar.addClass("fixed-bottom");
-      navbar.addClass("bg-dark");
+$("#check").change(function () {
+  if ($("#check").is(":checked")) {
+      $("#Button").prop("disabled", false);
+  } else {
+      $("#Button").prop("disabled", true);
   }
-  if(windowInnerWidth >= 993){
-      navbar.removeClass("fixed-bottom");
-      navbar.removeClass("bg-dark");
-  }
-}
+});
 
-function showDropdown(navbarDropdown, list){
-  $(navbarDropdown).addClass("show");
-  $(navbarDropdown).prop("aria-expanded", true);
-  $(list).addClass("show");
-}
+let data = document.querySelectorAll(".info");
+const ajaxSend = (formData) => {
+  fetch("https://formcarry.com/s/bn_UWDNzIyI", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+      },
+      body: JSON.stringify(formData)
+  })
+      .then(function (response) {
+          alert("Сообщение отправлено");
+          data.forEach((element) => { element.value = ""; });
+          $("#check").prop("checked", false);
+          $("#Button").prop("disabled", true);
+          localStorage.clear();
+      })
+      .catch((error) => {alert(error);})
+};
 
-function hideDropdown(navbarDropdown, list){
-  let windowInnerWidth = window.innerWidth;
-  if(windowInnerWidth >= 993) {
-      $(navbarDropdown).removeClass("show");
-      $(navbarDropdown).prop("aria-expanded", false);
-      $(list).removeClass("show");
-  }
+const forms = $("#Form");
+for (let i = 0; i < forms.length; i++) {
+  $("#Button").click(function (e) {
+      e.preventDefault();
+
+      let formData = new FormData(forms[i]);
+      formData = Object.fromEntries(formData);
+
+      ajaxSend(formData);
+  });
 }
+  
+});
